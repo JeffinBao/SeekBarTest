@@ -53,7 +53,8 @@
     <com.skywang.control.MyView
         android:id="@+id/my_view"
         android:layout_width="match_parent"
-        android:layout_height="30dp"
+        android:layout_height="60dp"
+        android:gravity="center"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
         android:background="@android:color/darker_gray" />

@@ -3,6 +3,7 @@ package com.skywang.control;
 import com.skywang.control.MyView.SeekListener;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.SeekBar;
@@ -42,11 +43,17 @@ public class SeekBarTest extends Activity implements SeekBar.OnSeekBarChangeList
 		
 		tv_my = (TextView) findViewById(R.id.tv_my);
 		my_view = (MyView) findViewById(R.id.my_view);
+		my_view.setMax(50);
+		my_view.setProgress(35);
+		my_view.setLeftLineColor(Color.CYAN);
+		my_view.setRightLineColor(Color.RED);
+		my_view.setLineWidth(5);
 		my_view.setSeekListener(new SeekListener() {
 			
 			@Override
 			public void onSeek(int progress) {
 				tv_my.setText("自定义的seek:" + progress);
+				my_view.setTextOverThumb(String.valueOf(progress));
 			}
 		});
 	}	
