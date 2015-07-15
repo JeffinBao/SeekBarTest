@@ -26,6 +26,8 @@ public class MyView extends View {
     private int mMax=100;
     private int progress;
     private boolean isSetProgress=false;
+    private int xOffset_text;
+    private int yOffset_text;
     
 	interface SeekListener {
 		void onSeek(int progress);
@@ -76,6 +78,24 @@ public class MyView extends View {
 	
 	public String getTextOverThumb(){
 		return mTvProgress.getText().toString();
+	}
+	
+	//set x coordinate offset of text over thumb
+	public void setTextXoffset(int offset){
+		xOffset_text=offset;
+	}
+	
+	public int getTextXoffset(){
+		return xOffset_text;
+	}
+	
+	//set y coordinate offset of text over thumb
+	public void setTextYoffset(int offset){
+		yOffset_text=offset;
+	}
+	
+	public int getTextYoffset(){
+		return yOffset_text;
 	}
 		
 	public void setMax(int mMax){
@@ -135,6 +155,15 @@ public class MyView extends View {
 		 point.x = event.getX();
 		 point.y = event.getY();
          invalidate();
+         
+         //invoke listener.onSeek method when touch event start
+         if(null != listener) {
+             //Log.d("DEBUG","progress is "+progress);
+             listener.onSeek(progress);
+         }
+         //isSetProgress flag turn false once touch event start
+         isSetProgress=false;
+         
          return true;   
      } 
 	
@@ -156,7 +185,6 @@ public class MyView extends View {
 		//whether setProgress method is invoked or not
 		if(isSetProgress){
 			x=(float)progress*(w-bitW)/mMax;
-			isSetProgress=false;
 		}else{
 			x = point.x;
 		}
@@ -178,17 +206,13 @@ public class MyView extends View {
 			textPaint.setColor(Color.WHITE);
 			textPaint.setTextSize(36);
 			
-			float text_posi_x=x+bitW/2;
-			int text_posi_y=thumb_y-20;
+			float text_posi_x=x+bitW/2+xOffset_text;
+			float text_posi_y=thumb_y+yOffset_text;
 			
-			canvas.drawText(getTextOverThumb(),text_posi_x-20,text_posi_y,textPaint);
+			canvas.drawText(getTextOverThumb(),text_posi_x,text_posi_y,textPaint);
 		}
 		
 		progress = (int) ((x / (w-bitW))* mMax);
-	
-		if(null != listener) {
-			//Log.d("DEBUG","progress is "+progress);
-			listener.onSeek(progress);
-		}
+
 	}
 }
